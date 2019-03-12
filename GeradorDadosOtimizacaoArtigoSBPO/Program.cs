@@ -9,4 +9,6 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             Console.WriteLine("Hello World!");
         }
     }
+
+
 }
