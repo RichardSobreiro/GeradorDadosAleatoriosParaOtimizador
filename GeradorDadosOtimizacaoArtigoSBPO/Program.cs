@@ -6,7 +6,8 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\MDVHRTWSDR.dat";
+            GerarDadosAleatoriosMDVHRPTW.Execute(path, 5, 1, 10, 4);
         }
     }
 
