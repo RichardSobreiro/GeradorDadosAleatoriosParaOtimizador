@@ -53,11 +53,11 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             File.WriteAllText(path, string.Empty);
             using (var file = new StreamWriter(path))
             {
-                file.WriteLine($"int M = {20000};");
-                file.WriteLine($"int qC = {qC};");
-                file.WriteLine($"int qP = {qP};");
-                file.WriteLine($"int qB = {qB};");
-                file.WriteLine($"int qVg = {qVg};");
+                file.WriteLine($"M = {20000};");
+                file.WriteLine($"qC = {qC};");
+                file.WriteLine($"qP = {qP};");
+                file.WriteLine($"qB = {qB};");
+                file.WriteLine($"qVg = {qVg};");
                 WriteMatrixNxNToFile(file, cr, V, V, "cr");
                 WriteMatrixNxNToFile(file, cac, V, qP, "cac");
                 WriteArrayToFile(file, cuc, qB, "cuc");

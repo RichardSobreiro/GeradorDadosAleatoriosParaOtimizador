@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeradorDadosOtimizacaoArtigoSBPO
+﻿namespace GeradorDadosOtimizacaoArtigoSBPO
 {
     class Program
     {
