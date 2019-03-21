@@ -4,16 +4,16 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 {
     public static class GerarDadosAleatoriosProblemaDieta
     {
-        static int qConcreto = 4; // Quantidade de tipos de concreto 
-        static int qPeriodo = 10; // Quantidade de dias de planejamento
-        static int qPontosCarga = 2; // Quantidade de pontos de carga
-        static int qCimento = 4; // Quantidade de cimentos
-        static int qAdicao = 8;
-        static int qAgregadoMiudo = 4;
-        static int qAgregadoGraudo = 4;
-        static int qAgua = 4;
-        static int qAditivo = 4;
-        static int qMateriaisAdicionais = 4;
+        static int qConcreto = 1; // Quantidade de tipos de concreto 
+        static int qPeriodo = 2; // Quantidade de dias de planejamento
+        static int qPontosCarga = 1; // Quantidade de pontos de carga
+        static int qCimento = 1; // Quantidade de cimentos
+        static int qAdicao = 1;
+        static int qAgregadoMiudo = 1;
+        static int qAgregadoGraudo = 1;
+        static int qAgua = 1;
+        static int qAditivo = 1;
+        static int qMateriaisAdicionais = 1;
 
         public static void Execute(string path,
             int qConcreto,
@@ -37,13 +37,13 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             double[,] qav = new double[qAditivo, qConcreto]; // Quantidade do aditivo av necessário para produzir um metro cúbico do concreto c
             double[,] qma = new double[qMateriaisAdicionais, qConcreto]; // Quantidade do material adicional ma necessário para produzir um metro cúbico do concreto c
 
-            double[,,] cct = new double[qCimento, qPontosCarga, qConcreto]; // Custo do metro cúbico do cimento ct no ponto de carga p
-            double[,,] cad = new double[qAdicao, qPontosCarga, qConcreto]; // Custo unitário da adição ad no ponto de carga p
-            double[,,] cam = new double[qAgregadoMiudo, qPontosCarga, qConcreto]; // Custo unitário da areia am no ponto de carga p 
-            double[,,] cag = new double[qAgregadoGraudo, qPontosCarga, qConcreto]; // Custo unitário da brita ag no ponto de carga p
-            double[,,] ca = new double[qAgua, qPontosCarga, qConcreto];  // Custo unitário da água a no ponto de carga p
-            double[,,] cav = new double[qAditivo, qPontosCarga, qConcreto]; // Custo unitário do aditivo av no ponto de carga p
-            double[,,] cma = new double[qMateriaisAdicionais, qPontosCarga, qConcreto]; // Custo unitário do material adicional ma no ponto de carga p 
+            double[,,] cct = new double[qCimento, qPontosCarga, qPeriodo]; // Custo do metro cúbico do cimento ct no ponto de carga p
+            double[,,] cad = new double[qAdicao, qPontosCarga, qPeriodo]; // Custo unitário da adição ad no ponto de carga p
+            double[,,] cam = new double[qAgregadoMiudo, qPontosCarga, qPeriodo]; // Custo unitário da areia am no ponto de carga p 
+            double[,,] cag = new double[qAgregadoGraudo, qPontosCarga, qPeriodo]; // Custo unitário da brita ag no ponto de carga p
+            double[,,] ca = new double[qAgua, qPontosCarga, qPeriodo];  // Custo unitário da água a no ponto de carga p
+            double[,,] cav = new double[qAditivo, qPontosCarga, qPeriodo]; // Custo unitário do aditivo av no ponto de carga p
+            double[,,] cma = new double[qMateriaisAdicionais, qPontosCarga, qPeriodo]; // Custo unitário do material adicional ma no ponto de carga p 
 
             double[,] ecto = new double[qCimento, qPontosCarga]; // Estoque inicial do cimento c
             double[,] eado = new double[qAdicao, qPontosCarga]; // Estoque inicial de adição ad no ponto de carga p
@@ -65,23 +65,23 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             FuncoesGerais.GenerateMatrixRowsByColumns(qav, 20, 40, qAditivo, qConcreto);
             FuncoesGerais.GenerateMatrixRowsByColumns(qma, 0, 1, qMateriaisAdicionais, qConcreto);
 
-            FuncoesGerais.GenerateMatrixNxNxN(cct, 200, 400, qCimento, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(cad, 50, 100, qAdicao, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(cam, 100, 200, qAgregadoMiudo, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(cag, 100, 200, qAgregadoGraudo, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(ca, 20, 40, qAgua, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(cav, 30, 40, qAditivo, qPontosCarga, qConcreto);
-            FuncoesGerais.GenerateMatrixNxNxN(cma, 100, 200, qMateriaisAdicionais, qPontosCarga, qConcreto);
+            FuncoesGerais.GenerateMatrixNxNxN(cct, 200, 400, qCimento, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(cad, 50, 100, qAdicao, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(cam, 100, 200, qAgregadoMiudo, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(cag, 100, 200, qAgregadoGraudo, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(ca, 20, 40, qAgua, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(cav, 30, 40, qAditivo, qPontosCarga, qPeriodo);
+            FuncoesGerais.GenerateMatrixNxNxN(cma, 100, 200, qMateriaisAdicionais, qPontosCarga, qPeriodo);
 
-            FuncoesGerais.GenerateMatrixRowsByColumns(ecto, 400, 400, qCimento, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eado, 40, 40, qAdicao, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eamo, 600, 600, qAgregadoMiudo, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eago, 600, 600, qAgregadoGraudo, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eao, 600, 600, qAgua, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eavo, 40, 40, qAditivo, qConcreto);
-            FuncoesGerais.GenerateMatrixRowsByColumns(emao, 1, 1, qMateriaisAdicionais, qConcreto);
+            FuncoesGerais.GenerateMatrixRowsByColumns(ecto, 400, 400, qCimento, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eado, 40, 40, qAdicao, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eamo, 600, 600, qAgregadoMiudo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eago, 600, 600, qAgregadoGraudo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eao, 600, 600, qAgua, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eavo, 40, 40, qAditivo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(emao, 1, 1, qMateriaisAdicionais, qPontosCarga);
 
-            FuncoesGerais.GenerateMatrixNxNxN(Mc, 140, 140, qConcreto, qPontosCarga, qConcreto);
+            FuncoesGerais.GenerateMatrixNxNxN(Mc, 140, 140, qConcreto, qPontosCarga, qPeriodo);
 
             File.WriteAllText(path, string.Empty);
             using (var file = new StreamWriter(path))
@@ -107,23 +107,23 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 FuncoesGerais.WriteMatrixNxNToFile(file, qav, qAditivo, qConcreto, "qav");
                 FuncoesGerais.WriteMatrixNxNToFile(file, qma, qMateriaisAdicionais, qConcreto, "qma");
 
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cct, qCimento, qPontosCarga, qConcreto, "cct");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cad, qAdicao, qPontosCarga, qConcreto, "cad");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cam, qAgregadoMiudo, qPontosCarga, qConcreto, "cam");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cag, qAgregadoGraudo, qPontosCarga, qConcreto, "cag");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, ca, qAgua, qPontosCarga, qConcreto, "ca");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cav, qAditivo, qPontosCarga, qConcreto, "cav");
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, cma, qMateriaisAdicionais, qPontosCarga, qConcreto, "cma");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cct, qCimento, qPontosCarga, qPeriodo, "cct");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cad, qAdicao, qPontosCarga, qPeriodo, "cad");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cam, qAgregadoMiudo, qPontosCarga, qPeriodo, "cam");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cag, qAgregadoGraudo, qPontosCarga, qPeriodo, "cag");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, ca, qAgua, qPontosCarga, qPeriodo, "ca");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cav, qAditivo, qPontosCarga, qPeriodo, "cav");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, cma, qMateriaisAdicionais, qPontosCarga, qPeriodo, "cma");
 
-                FuncoesGerais.WriteMatrixNxNToFile(file, ecto, qCimento, qConcreto, "ecto");
-                FuncoesGerais.WriteMatrixNxNToFile(file, eado, qAdicao, qConcreto, "eado");
-                FuncoesGerais.WriteMatrixNxNToFile(file, eamo, qAgregadoMiudo, qConcreto, "eamo");
-                FuncoesGerais.WriteMatrixNxNToFile(file, eago, qAgregadoGraudo, qConcreto, "eago");
-                FuncoesGerais.WriteMatrixNxNToFile(file, eao, qAgua, qConcreto, "eao");
-                FuncoesGerais.WriteMatrixNxNToFile(file, eavo, qAditivo, qConcreto, "eavo");
-                FuncoesGerais.WriteMatrixNxNToFile(file, emao, qMateriaisAdicionais, qConcreto, "emao");
+                FuncoesGerais.WriteMatrixNxNToFile(file, ecto, qCimento, qPontosCarga, "ecto");
+                FuncoesGerais.WriteMatrixNxNToFile(file, eado, qAdicao, qPontosCarga, "eado");
+                FuncoesGerais.WriteMatrixNxNToFile(file, eamo, qAgregadoMiudo, qPontosCarga, "eamo");
+                FuncoesGerais.WriteMatrixNxNToFile(file, eago, qAgregadoGraudo, qPontosCarga, "eago");
+                FuncoesGerais.WriteMatrixNxNToFile(file, eao, qAgua, qPontosCarga, "eao");
+                FuncoesGerais.WriteMatrixNxNToFile(file, eavo, qAditivo, qPontosCarga, "eavo");
+                FuncoesGerais.WriteMatrixNxNToFile(file, emao, qMateriaisAdicionais, qPontosCarga, "emao");
 
-                FuncoesGerais.WriteMatrixNxNxNToFile(file, Mc, qConcreto, qPontosCarga, qConcreto, "Mc");
+                FuncoesGerais.WriteMatrixNxNxNToFile(file, Mc, qConcreto, qPontosCarga, qPeriodo, "Mc");
             }
         }
     }

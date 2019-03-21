@@ -152,9 +152,9 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                     for (int k = 0; k < dim3; k++)
                     {
                         if (k == 0)
-                            file.Write($"{matrix[i, j, k]}");
+                            file.Write($"{(float)Math.Round(matrix[i, j, k], 1)}");
                         else
-                            file.Write($", {matrix[i, j, k]}");
+                            file.Write($", {(float)Math.Round(matrix[i, j, k], 1)}");
                     }
                     file.Write($"]");
                 }
@@ -176,9 +176,9 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 for (int j = 0; j < columns; j++)
                 {
                     if (j == 0)
-                        file.Write($"{matrix[i, j]}");
+                        file.Write($"{(float)Math.Round(matrix[i, j], 1)}");
                     else
-                        file.Write($", {matrix[i, j]}");
+                        file.Write($", {(float)Math.Round(matrix[i, j], 1)}");
                 }
                 if (i == (rows - 1))
                     file.Write($"]{Environment.NewLine}");
@@ -217,9 +217,9 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             for (int i = 0; i < size; i++)
             {
                 if (i == 0)
-                    file.Write($"{array[i]}");
+                    file.Write($"{(float)Math.Round(array[i], 1)}");
                 else
-                    file.Write($", {array[i]}");
+                    file.Write($", {(float)Math.Round(array[i], 1)}");
             }
             file.Write($"];{Environment.NewLine}");
         }
