@@ -4,17 +4,6 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 {
     public static class GerarDadosAleatoriosProblemaDieta
     {
-        static int qConcreto = 1; // Quantidade de tipos de concreto 
-        static int qPeriodo = 2; // Quantidade de dias de planejamento
-        static int qPontosCarga = 1; // Quantidade de pontos de carga
-        static int qCimento = 1; // Quantidade de cimentos
-        static int qAdicao = 1;
-        static int qAgregadoMiudo = 1;
-        static int qAgregadoGraudo = 1;
-        static int qAgua = 1;
-        static int qAditivo = 1;
-        static int qMateriaisAdicionais = 1;
-
         public static void Execute(string path,
             int qConcreto,
             int qPeriodo,
@@ -25,9 +14,13 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             int qAgregadoGraudo,
             int qAgua,
             int qAditivo,
-            int qMateriaisAdicionais)
+            int qMateriaisAdicionais,
+            int demandaMinima,
+            int demandaMaxima)
         {
             double[,] d = new double[qConcreto, qPeriodo]; // Demanda do concreto c no dia t
+
+            double[,] QP = new double[qPontosCarga, qPeriodo]; // Demanda do concreto c no dia t
 
             double[,] qct = new double[qCimento, qConcreto]; // Quantidade do cimento ct necessária para produzir um metro cúbico do concreto c
             double[,] qad = new double[qAdicao, qConcreto]; // Quantidade da adição ad necessária para produzir um metro cúbico do concreto c
@@ -55,7 +48,14 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 
             double[,,] Mc = new double[qConcreto, qPontosCarga, qPeriodo]; // Máxima quantidade de concreto c que pode ser demandada no ponto de carga p no dia t
 
-            FuncoesGerais.GenerateMatrixRowsByColumns(d, 100, 140, qConcreto, qPeriodo);
+            FuncoesGerais.GenerateMatrixRowsByColumns(d, demandaMinima, demandaMaxima, qConcreto, qPeriodo);
+
+            for(var i = 0; i < qConcreto; i++)
+            {
+                d[i, 0] = 0;
+            }
+
+            FuncoesGerais.GenerateMatrixRowsByColumns(QP, (demandaMinima / 2), demandaMinima, qPontosCarga, qPeriodo);
 
             FuncoesGerais.GenerateMatrixRowsByColumns(qct, 200, 400, qCimento, qConcreto);
             FuncoesGerais.GenerateMatrixRowsByColumns(qad, 20, 40, qAdicao, qConcreto);
@@ -73,13 +73,13 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             FuncoesGerais.GenerateMatrixNxNxN(cav, 30, 40, qAditivo, qPontosCarga, qPeriodo);
             FuncoesGerais.GenerateMatrixNxNxN(cma, 100, 200, qMateriaisAdicionais, qPontosCarga, qPeriodo);
 
-            FuncoesGerais.GenerateMatrixRowsByColumns(ecto, 400, 400, qCimento, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eado, 40, 40, qAdicao, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eamo, 600, 600, qAgregadoMiudo, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eago, 600, 600, qAgregadoGraudo, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eao, 600, 600, qAgua, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(eavo, 40, 40, qAditivo, qPontosCarga);
-            FuncoesGerais.GenerateMatrixRowsByColumns(emao, 1, 1, qMateriaisAdicionais, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(ecto, 0, 0, qCimento, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eado, 0, 0, qAdicao, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eamo, 0, 0, qAgregadoMiudo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eago, 0, 0, qAgregadoGraudo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eao, 0, 0, qAgua, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(eavo, 0, 0, qAditivo, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(emao, 0, 0, qMateriaisAdicionais, qPontosCarga);
 
             FuncoesGerais.GenerateMatrixNxNxN(Mc, 140, 140, qConcreto, qPontosCarga, qPeriodo);
 
@@ -98,6 +98,8 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 file.WriteLine($"qMateriaisAdicionais = {qMateriaisAdicionais};");
 
                 FuncoesGerais.WriteMatrixNxNToFile(file, d, qConcreto, qPeriodo, "d");
+
+                FuncoesGerais.WriteMatrixNxNToFile(file, QP, qPontosCarga, qPeriodo, "QP");
 
                 FuncoesGerais.WriteMatrixNxNToFile(file, qct, qCimento, qConcreto, "qct");
                 FuncoesGerais.WriteMatrixNxNToFile(file, qad, qAdicao, qConcreto, "qad");
