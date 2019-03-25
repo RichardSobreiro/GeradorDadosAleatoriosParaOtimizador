@@ -5,71 +5,71 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 {
     public static class GerarDadosAleatoriosMDVHRPTW
     {
-        public static void Execute(string path, int qC, int qP, int qB, int qVg)
-        {
-            int V = qC + qP;
-            double[,] cr = new double[V, V]; // Custo rodoviario
-            double[,] cac = new double[V, qP]; // Custo de atendimento do client j pelo ponto de carga p
-            double[] cuc = new double[qB]; // Custo de uso do caminhao k
-            int[,] ti = new int[V, V]; // Tempo trajeto ida entre i e j
-            int[,] tv = new int[V, V]; // Tempo trajeto volta entre i e j
-            int[] tp = new int[qP]; // Tempo de pesagem em cada ponto de carga p
-            int[] td = new int[V]; // Tempo de descarga no cliente c
-            int[,] hc = new int[V, qVg]; // Hora de chegada para cada viagem do cliente
-            double[,] vc = new double[V, qVg]; // Volume de material solicitado pelo cliente em cada viagem 
-            int[] qv = new int[V]; // Quantidade de viagens para cada cliente
-            int[] kp = new int[qP]; // Quantidade veiculos disponiveis por central
-
-            GenerateRandomData(V, qP, qB, qVg, cr, cac, cuc, ti, tv, tp, td, hc, vc,
-                qv, kp);
-
-            WriteValuesToDatFile(V, qC, qP, qB, qVg, cr, cac, cuc, ti, tv, tp, td, hc, vc,
-                qv, kp, path);
-        }
-
-        static void GenerateRandomData(int V, int qP, int qB, int qVg, 
-            double[,] cr, double[,] cac, double[] cuc,
-            int[,] ti, int[,] tv, int[] tp, int[] td, int[,] hc, double[,] vc, 
-            int[] qv, int[]kp)
-        {
-            FuncoesGerais.GenerateSymmetricMatrixNxN(V, cr, 10, 40);
-            FuncoesGerais.GenerateMatrixRowsByColumns(cac, 200, 400, V, qP, qP);
-            FuncoesGerais.GenerateRandomArray(cuc, 10, 20, qB);
-            FuncoesGerais.GenerateSymmetricMatrixNxN(V, ti, 10, 80);
-            FuncoesGerais.GenerateSymmetricMatrixNxN(V, tv, 10, 80);
-            FuncoesGerais.GenerateRandomArray(tp, 7, 7, qP);
-            FuncoesGerais.GenerateRandomArray(td, 15, 30, V, qP);
-            FuncoesGerais.GenerateMatrixRowsByColumns(hc, 400, 1200, V, qVg, qP);
-            FuncoesGerais.GenerateMatrixRowsByColumns(vc, 8, 8, V, qVg, qP);
-            FuncoesGerais.GenerateRandomArray(qv, qVg, qVg, V, qP);
-            FuncoesGerais.GenerateRandomArray(kp, 10, 10, qP);
-        }
-
-        static void WriteValuesToDatFile(int V, int qC, int qP, int qB, int qVg,
-            double[,] cr, double[,] cac, double[] cuc,
-            int[,] ti, int[,] tv, int[] tp, int[] td, int[,] hc, double[,] vc,
-            int[] qv, int[] kp, string path)
+        public static void Execute(string path, int qNos, int qClusters, int qPontosCarga,
+            int qBetoneiras)
         {
             File.WriteAllText(path, string.Empty);
-            using (var file = new StreamWriter(path))
-            {
-                file.WriteLine($"M = {20000};");
-                file.WriteLine($"qC = {qC};");
-                file.WriteLine($"qP = {qP};");
-                file.WriteLine($"qB = {qB};");
-                file.WriteLine($"qVg = {qVg};");
-                FuncoesGerais.WriteMatrixNxNToFile(file, cr, V, V, "cr");
-                FuncoesGerais.WriteMatrixNxNToFile(file, cac, V, qP, "cac");
-                FuncoesGerais.WriteArrayToFile(file, cuc, qB, "cuc");
-                FuncoesGerais.WriteMatrixNxNToFile(file, ti, V, V, "ti");
-                FuncoesGerais.WriteMatrixNxNToFile(file, tv, V, V, "tv");
-                FuncoesGerais.WriteArrayToFile(file, tp, qP, "tp");
-                FuncoesGerais.WriteArrayToFile(file, td, V, "td");
-                FuncoesGerais.WriteMatrixNxNToFile(file, hc, V, qVg, "hc");
-                FuncoesGerais.WriteMatrixNxNToFile(file, vc, V, qVg, "vc");
-                FuncoesGerais.WriteArrayToFile(file, qv, V, "qv");
-                FuncoesGerais.WriteArrayToFile(file, kp, qP, "kp");
-            }
-        }     
+            var file = new StreamWriter(path);
+
+            file.Write($"qNos = {qNos};{Environment.NewLine}");
+            file.Write($"qClusters = {qClusters};{Environment.NewLine}");
+            file.Write($"qPontosCarga = {qPontosCarga};{Environment.NewLine}");
+            file.Write($"qBetoneiras = {qBetoneiras};{Environment.NewLine}");
+
+            file.Write($"Mc = {1440};{Environment.NewLine}");
+            file.Write($"Mt = {1440};{Environment.NewLine}");
+            file.Write($"M = {1440};{Environment.NewLine}");
+
+            double[] rhoi = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(rhoi, 10, 20, qNos);
+            FuncoesGerais.WriteArrayToFile(file, rhoi, qNos, "rhoi");
+
+            double[] rhov = new double[qBetoneiras];
+            FuncoesGerais.GenerateRandomArray(rhov, 50, 50, qBetoneiras);
+            FuncoesGerais.WriteArrayToFile(file, rhov, qBetoneiras, "rhov");
+
+            double[] a = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(a, 1, 1, qNos);
+            FuncoesGerais.WriteArrayToFile(file, a, qNos, "a");
+            double[] b = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(b, 40, 40, qNos);
+            FuncoesGerais.WriteArrayToFile(file, b, qNos, "b");
+
+            double[,,] c = new double[qBetoneiras, qNos, qNos];
+            FuncoesGerais.GenerateSymmetricMatrixNxNxN(c, 100, 200, qBetoneiras, qNos, qNos);
+            FuncoesGerais.WriteMatrixNxNxNToFile(file, c, qBetoneiras, qNos, qNos, "c");
+
+            double[] cf = new double[qBetoneiras];
+            FuncoesGerais.GenerateRandomArray(cf, 40, 40, qBetoneiras);
+            FuncoesGerais.WriteArrayToFile(file, cf, qBetoneiras, "cf");
+
+            double dMax = 25;
+            file.WriteLine($"dMax = {dMax};{Environment.NewLine}");
+            
+            double[] q = new double[qBetoneiras];
+            FuncoesGerais.GenerateRandomArray(q, 8, 8, qBetoneiras);
+            FuncoesGerais.WriteArrayToFile(file, q, qBetoneiras, "q");
+
+            double[,] st = new double[qNos, qBetoneiras];
+            FuncoesGerais.GenerateMatrixRowsByColumns(st, 420, 1440, qNos, qBetoneiras);
+            FuncoesGerais.WriteMatrixNxNToFile(file, st, qNos, qBetoneiras, "st");
+
+            double[,,] t = new double[qBetoneiras, qNos, qNos];
+            FuncoesGerais.GenerateSymmetricMatrixNxNxN(t, 20, 180, qBetoneiras, qNos, qNos);
+            FuncoesGerais.WriteMatrixNxNxNToFile(file, t, qBetoneiras, qNos, qNos, "t");
+
+            double[] tvMax = new double[qBetoneiras];
+            FuncoesGerais.GenerateRandomArray(tvMax, 480, 480, qBetoneiras);
+            FuncoesGerais.WriteArrayToFile(file, tvMax, qBetoneiras, "tvMax");
+
+            double[] w = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(w, 2, 8, qNos);
+            FuncoesGerais.WriteArrayToFile(file, w, qBetoneiras, "w");
+
+            double ctr = 10;
+            file.WriteLine($"ctr = {ctr};{Environment.NewLine}");
+
+            file.Close();
+        }
     }
 }

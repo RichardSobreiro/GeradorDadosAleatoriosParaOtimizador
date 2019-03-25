@@ -84,6 +84,33 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             }
         }
 
+        public static void GenerateSymmetricMatrixNxNxN(double[,,] matrix, double min,
+            double max, int dim1, int dim2, int dim3)
+        {
+            Random random = new Random();
+            for (int i = 0; i < dim1; i++)
+            {
+                for (int j = 0; j < dim2; j++)
+                {
+                    for (int k = 0; k < dim3; k++)
+                    {
+                        if (j == k)
+                        {
+                            matrix[i, j, k] = 0;
+                        }
+                        else if(j < k)
+                        {
+                            matrix[i, j, k] = random.NextDouble() * (max - min) + min;
+                        }
+                        else
+                        {
+                            matrix[i, j, k] = matrix[i, k, j];
+                        }
+                    }
+                }
+            }
+        }
+
         public static void GenerateMatrixRowsByColumns(int[,] matrix, int min,
             int max, int rows, int columns, int? controle = null)
         {
