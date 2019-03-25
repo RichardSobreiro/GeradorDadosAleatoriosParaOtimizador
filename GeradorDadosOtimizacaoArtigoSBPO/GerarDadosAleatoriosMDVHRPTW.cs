@@ -28,13 +28,6 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             FuncoesGerais.GenerateRandomArray(rhov, 50, 50, qBetoneiras);
             FuncoesGerais.WriteArrayToFile(file, rhov, qBetoneiras, "rhov");
 
-            double[] a = new double[qNos];
-            FuncoesGerais.GenerateRandomArray(a, 1, 1, qNos);
-            FuncoesGerais.WriteArrayToFile(file, a, qNos, "a");
-            double[] b = new double[qNos];
-            FuncoesGerais.GenerateRandomArray(b, 40, 40, qNos);
-            FuncoesGerais.WriteArrayToFile(file, b, qNos, "b");
-
             double[,,] c = new double[qBetoneiras, qNos, qNos];
             FuncoesGerais.GenerateSymmetricMatrixNxNxN(c, 100, 200, qBetoneiras, qNos, qNos);
             FuncoesGerais.WriteMatrixNxNxNToFile(file, c, qBetoneiras, qNos, qNos, "c");
@@ -52,7 +45,23 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 
             double[,] st = new double[qNos, qBetoneiras];
             FuncoesGerais.GenerateMatrixRowsByColumns(st, 420, 1440, qNos, qBetoneiras);
+            double[] a = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(a, 0, 0, qNos);
+            double[] b = new double[qNos];
+            FuncoesGerais.GenerateRandomArray(b, 0, 0, qNos);
+            for(var i = 0; i < qNos; i++)
+            {
+                var aux = st[i, 0];
+                for(var v = 0; v < qBetoneiras; v++)
+                {
+                    st[i, v] = aux;
+                    a[i] = aux - 10;
+                    b[i] = aux + 10;
+                }
+            }
             FuncoesGerais.WriteMatrixNxNToFile(file, st, qNos, qBetoneiras, "st");
+            FuncoesGerais.WriteArrayToFile(file, a, qNos, "a");
+            FuncoesGerais.WriteArrayToFile(file, b, qNos, "b");
 
             double[,,] t = new double[qBetoneiras, qNos, qNos];
             FuncoesGerais.GenerateSymmetricMatrixNxNxN(t, 20, 180, qBetoneiras, qNos, qNos);
