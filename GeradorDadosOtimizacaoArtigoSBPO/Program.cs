@@ -4,13 +4,20 @@
     {
         static void Main(string[] args)
         {
-            int qNos = 10;
-            int qClusters = 10;
-            int qPontosCarga = 1;
-            int qBetoneiras = 10;
+            int qViagens = 40;
+            int qPontosCarga = 2;
+            int M = 1440;
 
-            string path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\MDVHRTWSDR.dat";
-            GerarDadosAleatoriosMDVHRPTW.Execute(path, qNos, qClusters, qPontosCarga, qBetoneiras);
+            string path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducao.dat";
+            GerarDadosProgramacaoProducao.Execute(path, qViagens, qPontosCarga, M);
+
+            //int qNos = 10;
+            //int qClusters = 10;
+            //qPontosCarga = 1;
+            //int qBetoneiras = 10;
+
+            //path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\MDVHRTWSDR.dat";
+            //GerarDadosAleatoriosMDVHRPTW.Execute(path, qNos, qClusters, qPontosCarga, qBetoneiras);
 
             //int qConcreto = 1; // Quantidade de tipos de concreto 
             //int qPeriodo = 4; // Quantidade de dias de planejamento
