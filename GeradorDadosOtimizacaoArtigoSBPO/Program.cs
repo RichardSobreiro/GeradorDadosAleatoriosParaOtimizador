@@ -4,12 +4,18 @@
     {
         static void Main(string[] args)
         {
-            int qViagens = 40;
-            int qPontosCarga = 2;
+            int qViagens = 3;
+            int qPontosCarga = 1;
+            int qBetoneiras = 2;
             int M = 1440;
 
-            string path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducao.dat";
-            GerarDadosProgramacaoProducao.Execute(path, qViagens, qPontosCarga, M);
+            string path = @"C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducaoVeiculos.dat";
+
+            GerarDadosProgramacaoProducaoVeiculos.Execute(path, qViagens, 
+                qPontosCarga, qBetoneiras, M);
+
+            //path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducao.dat";
+            //GerarDadosProgramacaoProducao.Execute(path, qViagens, qPontosCarga, M);
 
             //int qNos = 10;
             //int qClusters = 10;
