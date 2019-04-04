@@ -17,26 +17,35 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 
             double[,] dp = new double[qViagens, qPontosCarga];
             FuncoesGerais.GenerateMatrixRowsByColumns(dp, 25, 25, qViagens, qPontosCarga);
+            for (int i = 0; i < qPontosCarga; i++)
+                dp[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, dp, qViagens, qPontosCarga, "dp");
 
             double[,] dv = new double[qViagens, qPontosCarga];
             FuncoesGerais.GenerateMatrixRowsByColumns(dv, 8, 40, qViagens, qPontosCarga);
+            for (int i = 0; i < qPontosCarga; i++)
+                dv[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, dv, qViagens, qPontosCarga, "dv");
 
             double[] td = new double[qViagens];
             FuncoesGerais.GenerateRandomArray(td, 10, 20, qViagens);
+            td[0] = 0;
             FuncoesGerais.WriteArrayToFile(file, td, qViagens, "td");
 
             double[] tmaxvc = new double[qViagens];
             FuncoesGerais.GenerateRandomArray(tmaxvc, 120, 120, qViagens);
+            tmaxvc[0] = 0;
             FuncoesGerais.WriteArrayToFile(file, tmaxvc, qViagens, "tmaxvc");
 
             double[] hs = new double[qViagens];
             FuncoesGerais.GenerateRandomArray(hs, 360, 1200, qViagens);
+            hs[0] = 0;
             FuncoesGerais.WriteArrayToFile(file, hs, qViagens, "hs");
 
             double[,] c = new double[qViagens, qPontosCarga];
             FuncoesGerais.GenerateMatrixRowsByColumns(c, 40, 80, qViagens, qPontosCarga);
+            for (int i = 0; i < qPontosCarga; i++)
+                c[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, c, qViagens, qPontosCarga, "c");
 
             double[] qvMax = new double[qPontosCarga];

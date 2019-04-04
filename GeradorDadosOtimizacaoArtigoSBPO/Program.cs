@@ -4,10 +4,10 @@
     {
         static void Main(string[] args)
         {
-            int qViagens = 3;
+            int qViagens = 4;
             int qPontosCarga = 1;
-            int qBetoneiras = 2;
-            int M = 1440;
+            int qBetoneiras = 3;
+            int M = 3000;
 
             string path = @"C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducaoVeiculos.dat";
 
