@@ -4,7 +4,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
 {
     public static class GerarDadosProgramacaoProducaoVeiculos
     {
-        public static void Execute(string path, int qViagens, int qPontosCarga, 
+        public static void Execute(string path, int qViagens, int qPontosCarga,
             int qBetoneiras, int M)
         {
             File.WriteAllText(path, string.Empty);
