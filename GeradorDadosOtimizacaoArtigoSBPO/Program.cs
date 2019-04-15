@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            int qViagens = 4;
+            int qViagens = 8;
             int qPontosCarga = 1;
             int qBetoneiras = 3;
             int M = 3000;

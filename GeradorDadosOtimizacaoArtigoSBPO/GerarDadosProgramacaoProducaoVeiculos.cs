@@ -16,13 +16,13 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             file.WriteLine($"M = {M};");
 
             double[,] dp = new double[qViagens, qPontosCarga];
-            FuncoesGerais.GenerateMatrixRowsByColumns(dp, 25, 25, qViagens, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(dp, 7, 7, qViagens, qPontosCarga);
             for (int i = 0; i < qPontosCarga; i++)
                 dp[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, dp, qViagens, qPontosCarga, "dp");
 
             double[,] dv = new double[qViagens, qPontosCarga];
-            FuncoesGerais.GenerateMatrixRowsByColumns(dv, 8, 40, qViagens, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(dv, 7, 7, qViagens, qPontosCarga);
             for (int i = 0; i < qPontosCarga; i++)
                 dv[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, dv, qViagens, qPontosCarga, "dv");
