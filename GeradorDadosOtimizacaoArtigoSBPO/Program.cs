@@ -4,12 +4,12 @@
     {
         static void Main(string[] args)
         {
-            int qViagens = 8;
+            int qViagens = 10;
             int qPontosCarga = 1;
-            int qBetoneiras = 3;
-            int M = 3000;
+            int qBetoneiras = 1;
+            int M = 10000;
 
-            string path = @"C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducaoVeiculos.dat";
+            string path = @"C:\\ModelosOtimizacaoOPL\\ProgramacaoProducaoVeiculos.dat";
 
             GerarDadosProgramacaoProducaoVeiculos.Execute(path, qViagens, 
                 qPontosCarga, qBetoneiras, M);

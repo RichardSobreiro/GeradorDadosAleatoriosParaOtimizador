@@ -165,6 +165,32 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             }
         }
 
+        public static void Generate01MatrixRowsByColumnsByIntervals(double[,] matrix, 
+            int rows, int columns)
+        {
+            int step = columns / rows;
+            int intervalBegin = 0, intervalEnd = step;
+            int controlEnd = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++) 
+                {
+                    if((intervalBegin <= j && j < intervalEnd) || 
+                        (controlEnd == (rows - 1)) && j >= intervalBegin)
+                    {
+                        matrix[i, j] = 1;
+                    }
+                    else
+                    {
+                        matrix[i, j] = 0;
+                    }
+                }
+                controlEnd++;
+                intervalBegin = intervalEnd;
+                intervalEnd += step;
+            }
+        }
+
         public static void WriteMatrixNxNxNToFile(StreamWriter file,
             double[,,] matrix, int dim1, int dim2, int dim3, string arrayName)
         {

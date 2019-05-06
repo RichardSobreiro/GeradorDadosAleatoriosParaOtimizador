@@ -22,7 +22,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             FuncoesGerais.WriteMatrixNxNToFile(file, dp, qViagens, qPontosCarga, "dp");
 
             double[,] dv = new double[qViagens, qPontosCarga];
-            FuncoesGerais.GenerateMatrixRowsByColumns(dv, 7, 7, qViagens, qPontosCarga);
+            FuncoesGerais.GenerateMatrixRowsByColumns(dv, 10, 50, qViagens, qPontosCarga);
             for (int i = 0; i < qPontosCarga; i++)
                 dv[0, i] = 0;
             FuncoesGerais.WriteMatrixNxNToFile(file, dv, qViagens, qPontosCarga, "dv");
@@ -55,6 +55,14 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             double[] cuve = new double[qPontosCarga];
             FuncoesGerais.GenerateRandomArray(cuve, 5, 10, qPontosCarga);
             FuncoesGerais.WriteArrayToFile(file, cuve, qPontosCarga, "cuve");
+
+            double[,] pb = new double[qPontosCarga, qBetoneiras];
+            FuncoesGerais.Generate01MatrixRowsByColumnsByIntervals(pb, qPontosCarga, qBetoneiras);
+            FuncoesGerais.WriteMatrixNxNToFile(file, pb, qPontosCarga, qBetoneiras, "pb");
+
+            double[] cnv = new double[qViagens];
+            FuncoesGerais.GenerateRandomArray(cnv, 10000, 20000, qViagens);
+            FuncoesGerais.WriteArrayToFile(file, cnv, qViagens, "cnv");
 
             file.Close();
         }
