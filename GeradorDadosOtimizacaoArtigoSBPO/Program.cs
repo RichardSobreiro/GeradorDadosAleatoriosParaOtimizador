@@ -4,15 +4,18 @@
     {
         static void Main(string[] args)
         {
-            int qViagens = 10;
-            int qPontosCarga = 1;
-            int qBetoneiras = 1;
-            int M = 10000;
+            string path = @"C:\\RichardGitHub\\ReadyMixedConcreteTruckDispatching\\VRPTW.dat";
 
-            string path = @"C:\\ModelosOtimizacaoOPL\\ProgramacaoProducaoVeiculos.dat";
+            VRPTW.Execute(path);
 
-            GerarDadosProgramacaoProducaoVeiculos.Execute(path, qViagens, 
-                qPontosCarga, qBetoneiras, M);
+            //int qViagens = 10;
+            //int qPontosCarga = 1;
+            //int qBetoneiras = 1;
+            //int M = 10000;
+
+
+            //GerarDadosProgramacaoProducaoVeiculos.Execute(path, qViagens, 
+            //    qPontosCarga, qBetoneiras, M);
 
             //path = "C:\\Users\\richa\\opl\\ArtigoSBPO201904\\ProgramacaoProducao.dat";
             //GerarDadosProgramacaoProducao.Execute(path, qViagens, qPontosCarga, M);
