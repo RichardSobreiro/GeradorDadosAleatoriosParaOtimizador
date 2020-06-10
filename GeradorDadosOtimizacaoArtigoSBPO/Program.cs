@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            string path = @"C:\\RichardGitHub\\ReadyMixedConcreteTruckDispatching\\VRPTW.dat";
+            string path = @"C:\\Users\\Richard Sobreiro\\Desktop\\VRPTW.dat";
 
             VRPTW.Execute(path);
 
