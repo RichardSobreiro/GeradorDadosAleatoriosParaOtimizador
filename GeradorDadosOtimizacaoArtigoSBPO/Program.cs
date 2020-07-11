@@ -4,9 +4,9 @@
     {
         static void Main(string[] args)
         {
-            string path = $"C:\\Users\\Richard Sobreiro\\opl\\ReadyMixedConcreteTruckDispatching\\MDVRPTWMultiTrips.dat";
+            string path = $"C:\\Users\\Richard Sobreiro\\opl\\ReadyMixedConcreteTruckDispatching\\RMCTDP.dat";
 
-            MDVRPTWMultiTrips.Execute(path);
+            RMCTDP.Execute(path);
         }
     }
 
