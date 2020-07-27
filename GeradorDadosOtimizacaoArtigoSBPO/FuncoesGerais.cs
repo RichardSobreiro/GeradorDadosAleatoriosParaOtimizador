@@ -23,8 +23,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             }
         }
 
-        public static void GenerateSymmetricMatrixNxN(int size, int[,] matrix, int min,
-            int max)
+        public static void GenerateSymmetricMatrixNxN(int size, int[,] matrix, int min, int max)
         {
             Random random = new Random();
             for (int i = 0; i < size; i++)
