@@ -11,6 +11,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
         public int ServiceTime { get; set; }
         public int Interval { get; set; }
         public double RevenuePerCubicMeter { get; set; }
+        public int RMCType { get; set; }
         public List<double> TravelTimeEachLoadingPlace { get; set; } = new List<double>();
         public List<double> CostEachLoadingPlace { get; set; } = new List<double>();
         public List<Delivery> Deliveries { get; set; }
@@ -25,15 +26,16 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
         public List<double> TravelTimeEachLoadingPlace { get; set; }
         public List<double> CostEachLoadingPlace { get; set; }
         public int MustBeServed { get; set; }
+        public int RMCType { get; set; }
     }
 
     public static class RMCTDP_Simple
     {
         public static void Execute(string path)
         {
-            int nLP = 5;
-            int nMT = 30;
-            int numberOrders = 15;
+            int nLP = 10;
+            int nMT = 60;
+            int numberOrders = 50;
             int minVolumePerOrder = 12;
             int maxVolumePerOrder = 40;
             int beginTimeLoadingPlaces = 420;
@@ -45,6 +47,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             int minTravelTimeLoadingPlace = 15;
             int maxTravelTimeLoadingPlace = 40;
             int mixerTruckCubicMetersCapactity = 8;
+            int numberOfTypesOfRMC = 10;
 
             List<Order> orders = new List<Order>();
             Random random = new Random();
@@ -56,7 +59,8 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 order.TotalVolume = random.NextDouble() * (maxVolumePerOrder - minVolumePerOrder) + minVolumePerOrder;
                 order.Interval = 20;
                 order.RevenuePerCubicMeter = random.Next(minRevenuePerCubicMeter, maxRevenuePerCubicMeter);
-                for(int i = 0; i < nLP; i++)
+                order.RMCType = random.Next(0, numberOfTypesOfRMC);
+                for (int i = 0; i < nLP; i++)
                 {
                     order.TravelTimeEachLoadingPlace.Add((random.NextDouble() * (maxTravelTimeLoadingPlace - minTravelTimeLoadingPlace) + minTravelTimeLoadingPlace));
                     order.CostEachLoadingPlace.Add((random.NextDouble() * (maxCostLoadingPlace - minCostLoadingPlace) + minCostLoadingPlace));
@@ -87,11 +91,21 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                     newDelivery.TravelTimeEachLoadingPlace = order.TravelTimeEachLoadingPlace;
                     newDelivery.CostEachLoadingPlace = order.CostEachLoadingPlace;
                     newDelivery.MustBeServed = mustBeServed;
+                    newDelivery.RMCType = order.RMCType;
                     order.Deliveries.Add(newDelivery);
                 }
                 order.MustBeServed = mustBeServed;
                 orders.Add(order);
                 numberOrders--;
+            }
+            // If RMC is available at the loading place
+            int[,] rmclp = new int[numberOfTypesOfRMC, nLP];
+            for (int i = 0; i < numberOfTypesOfRMC; i++)
+            {
+                for (int j = 0; j < nLP; j++)
+                {
+                    rmclp[i, j] = random.Next(0, 2);
+                }
             }
 
             List<Delivery> deliveries = new List<Delivery>();
@@ -108,7 +122,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             file.WriteLine($"nD = {nD};");
 
             // RMC Mixer Trucks to Loading Places
-            int[] lpctm = new int[nMT];
+            int[] lpmt = new int[nMT];
             int numberOfPartitions = nMT / nLP;
             int ctrl = numberOfPartitions;
             int aux = 0;
@@ -120,7 +134,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 }
                 while (aux < ctrl && aux < nMT)
                 {
-                    lpctm[aux] = i;
+                    lpmt[aux] = i;
                     aux++;
                 }
                 if(aux >= nMT)
@@ -129,7 +143,7 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
                 }
                 ctrl += numberOfPartitions;
             }
-            FuncoesGerais.WriteArrayToFile(file, lpctm, nMT, "lpctm");
+            FuncoesGerais.WriteArrayToFile(file, lpmt, nMT, "lpmt");
             //--------------------------------------------------------------
 
             double[,] c = new double[nMT, nD];
@@ -139,29 +153,41 @@ namespace GeradorDadosOtimizacaoArtigoSBPO
             double[] b = new double[nD];
             int[] cfr = new int[nD];
             int[] dmbs = new int[nD];
+            int[,] dmt = new int[nMT, nD];
             double[] r = new double[nD];
+            int fdno = 0; // Index of the first delivery of the new order
+            bool firstDeliveryOfTheNewOrderWasNotCapturedYet = true;
             for (int i = 0; i < nMT; i++)
             {
                 for (int j = 0; j < nD; j++)
                 {
-                    c[i, j] = deliveries[j].CostEachLoadingPlace[lpctm[i] - 1];
-                    t[i, j] = deliveries[j].TravelTimeEachLoadingPlace[lpctm[i] - 1];
+                    c[i, j] = deliveries[j].CostEachLoadingPlace[lpmt[i] - 1];
+                    t[i, j] = deliveries[j].TravelTimeEachLoadingPlace[lpmt[i] - 1];
                     d[j] = deliveries[j].Volume;
                     a[j] = deliveries[j].ServiceTime;
                     b[j] = a[j] + 5;
                     cfr[j] = 2;
                     r[j] = deliveries[j].Revenue;
                     dmbs[j] = deliveries[j].MustBeServed;
+                    dmt[i, j] = rmclp[deliveries[j].RMCType, lpmt[i] - 1];
+                    if(deliveries[j].MustBeServed == 0 && firstDeliveryOfTheNewOrderWasNotCapturedYet)
+                    {
+                        fdno = j + 1;
+                        firstDeliveryOfTheNewOrderWasNotCapturedYet = false;
+                    }
                 }
             }
             FuncoesGerais.WriteMatrixNxNToFile(file, c, nMT, nD, "c");
             FuncoesGerais.WriteMatrixNxNToFile(file, t, nMT, nD, "t");
+            FuncoesGerais.WriteMatrixNxNToFile(file, dmt, nMT, nD, "dmt");
 
             float q = 8;
             file.WriteLine($"q = {q};");
 
-            float tc = 8;
+            float tc = 50;
             file.WriteLine($"tc = {tc};");
+
+            file.WriteLine($"fdno = {fdno};");
 
             FuncoesGerais.WriteArrayToFile(file, d, nD, "d");
 
